@@ -1,24 +1,19 @@
 # The following iterative sequence is defined for the set of positive integers
 # Which starting number, under one million, produces the longest chain ?
 def collatz_sequence(n):
-    def collatz_step(x):
-        if x % 2 == 0:
-            return x // 2
-        else:
-            return 3 * x + 1
-
     sequence = [n]
     while n != 1:
-        n = collatz_step(n)
+        if n % 2 == 0:
+            n = n // 2
+        else:
+            n = 3 * n + 1
         sequence.append(n)
     return sequence
 
 def find_longest_collatz_sequence(limit):
-    def sequence_length(n):
-        return len(collatz_sequence(n))
-
-    starting_numbers = range(1, limit)
-    return max(starting_numbers, key=sequence_length)
+    sequences = [(i, collatz_sequence(i)) for i in range(1, limit)]
+    longest = max(sequences, key=lambda x: len(x[1]))
+    return longest[0]
 
 result = find_longest_collatz_sequence(1000000)
 print(result)
